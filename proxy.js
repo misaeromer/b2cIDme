@@ -3,6 +3,26 @@ const axios = require("axios");
 const app = express();
 const port = process.env.PORT || 3000; // Use Heroku's port or default to 3000
 
+// Middleware to parse JSON and URL-encoded request bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Middleware to log all incoming requests
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  console.log(`Request received from: ${req.ip}`);
+  console.log(`Headers: ${JSON.stringify(req.headers, null, 2)}`);
+
+  if (Object.keys(req.body).length > 0) {
+    console.log(`Body: ${JSON.stringify(req.body, null, 2)}`);
+  } else {
+    console.log(`Body: None`);
+  }
+
+  console.log("-------------------------");
+  next();
+});
+
 // Proxy for OIDC Discovery Document
 app.get("/.well-known/openid-configuration", async (req, res) => {
   try {
