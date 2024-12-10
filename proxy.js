@@ -5,9 +5,11 @@ const port = process.env.PORT || 3000; // Use Heroku's port or default to 3000
 
 // Middleware to log all incoming requests
 app.use((req, res, next) => {
+  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   console.log(`Request received from: ${req.ip}`);
   console.log(`Headers: ${JSON.stringify(req.headers, null, 2)}`);
+  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   next();
 });
 
