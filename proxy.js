@@ -22,12 +22,9 @@ app.get("/.well-known/openid-configuration", async (req, res) => {
     );
     const discoveryDoc = response.data;
 
-    // Modify the `jwks_uri` to ensure proper functionality
-    // This appends any incoming query parameters from the request to the existing JWKS URI
-    const incomingQueryString = req.originalUrl.split("?")[1] || "";
-    discoveryDoc.jwks_uri = `${discoveryDoc.jwks_uri}${
-      incomingQueryString ? `&${incomingQueryString}` : ""
-    }`;
+    // Modify the `jwks_uri` to ensure the `urlsafe=true` parameter is appended
+    const originalJwksUri = discoveryDoc.jwks_uri.split("?")[0]; // Strip existing query params
+    discoveryDoc.jwks_uri = `${originalJwksUri}?urlsafe=true`;
 
     // Send the modified Discovery Document as the response
     res.setHeader("Content-Type", "application/json");
@@ -41,10 +38,8 @@ app.get("/.well-known/openid-configuration", async (req, res) => {
 // Proxy for JWKS Requests
 app.get("/oidc/.well-known/jwks", async (req, res) => {
   try {
-    // Construct the JWKS URI based on the incoming query parameters
-    const jwksUri = `https://api.idmelabs.com/oidc/.well-known/jwks${
-      req.originalUrl.split("?")[1] ? `?${req.originalUrl.split("?")[1]}` : ""
-    }`;
+    // Force the `urlsafe=true` parameter to ensure a clean response without \n characters
+    const jwksUri = `https://api.idmelabs.com/oidc/.well-known/jwks?urlsafe=true`;
 
     // Fetch the JWKS from the upstream server
     const response = await axios.get(jwksUri);
