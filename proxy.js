@@ -24,7 +24,9 @@ app.get("/.well-known/openid-configuration", async (req, res) => {
 
     // Modify the `jwks_uri` to ensure the `urlsafe=true` parameter is appended
     const originalJwksUri = discoveryDoc.jwks_uri.split("?")[0]; // Strip existing query params
-    discoveryDoc.jwks_uri = `${originalJwksUri}?urlsafe=true`;
+    // discoveryDoc.jwks_uri = `${originalJwksUri}?urlsafe=true`;
+    discoveryDoc.jwks_uri =
+      "https://mromer-b373ed7a72e8.herokuapp.com/oidc/.well-known/jwks";
 
     // Send the modified Discovery Document as the response
     res.setHeader("Content-Type", "application/json");
@@ -40,7 +42,6 @@ app.get("/oidc/.well-known/jwks", async (req, res) => {
   try {
     // Force the `urlsafe=true` parameter to ensure a clean response without \n characters
     const jwksUri = `https://api.idmelabs.com/oidc/.well-known/jwks?urlsafe=true`;
-
     // Fetch the JWKS from the upstream server
     const response = await axios.get(jwksUri);
     const jwks = response.data;
