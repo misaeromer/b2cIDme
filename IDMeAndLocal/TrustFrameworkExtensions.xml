@@ -46,8 +46,7 @@
                     <Description>Login with your ID.me account</Description>
                     <Protocol Name="OpenIdConnect"/>
                     <Metadata>
-                        <Item Key="ProviderName">api.idmelabs.com</Item>
-
+                        <!-- <Item Key="ProviderName">api.idmelabs.com</Item> -->
                         <Item Key="METADATA">https://mromer-b373ed7a72e8.herokuapp.com/.well-known/openid-configuration</Item>
                         <Item Key="client_id">65b1be67cffb9cbe483ef0837113c16a</Item>
                         <Item Key="response_types">code</Item>

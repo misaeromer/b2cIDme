@@ -43,10 +43,18 @@ app.get("/oidc/.well-known/jwks", async (req, res) => {
 
     // Fetch the JWKS from the upstream server
     const response = await axios.get(jwksUri);
+    const jwks = response.data;
 
-    // Return the JWKS response to the client
+    // Clean up `x5c` values to remove newlines
+    jwks.keys.forEach((key) => {
+      if (key.x5c) {
+        key.x5c = key.x5c.map((cert) => cert.replace(/\n/g, ""));
+      }
+    });
+
+    // Return the cleaned-up JWKS response to the client
     res.setHeader("Content-Type", "application/json");
-    res.send(response.data);
+    res.send(jwks);
   } catch (error) {
     console.error("Error fetching JWKS:", error.message);
     res.status(500).send({ error: "Error fetching JWKS" });

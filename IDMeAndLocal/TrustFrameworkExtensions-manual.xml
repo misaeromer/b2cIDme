@@ -50,7 +50,6 @@
                         <Item Key="authorization_endpoint">https://api.idmelabs.com/oauth/authorize</Item>
                         <Item Key="AccessTokenEndpoint">https://api.idmelabs.com/oauth/token</Item>
                         <Item Key="ClaimsEndpoint">https://api.idmelabs.com/api/public/v3/userinfo</Item>
-
                         <Item Key="HttpBinding">POST</Item>
                         <Item Key="response_types">code</Item>
                         <Item Key="scope">openid login</Item>
